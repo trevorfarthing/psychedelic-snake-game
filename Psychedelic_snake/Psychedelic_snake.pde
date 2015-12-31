@@ -4,10 +4,9 @@
 //             in the background at certain points
 //Some visuals taken from previous projects and incorporated into game
 
-import ddf.minim.*;
-Minim minim;
-AudioPlayer player1; //Audio player to play background song
-AudioPlayer player2;  //Audio player for sound effects
+import processing.sound.*;
+SoundFile file1; //File to play background song
+SoundFile file2; //File player for sound effects
 
 int[] snakeX = new int[100]; //X locations of snake parts
 int[] snakeY = new int[100]; //Y locations of snake parts
@@ -60,10 +59,12 @@ void setup() {
   rectMode(CENTER);
   frameRate(20);
   bg = loadImage("spiral.png");
-  minim = new Minim(this);
-  player1 = minim.loadFile("cinema.mp3");
-  player1.play();
-  player1.loop(); //Uncomment these lines to hear music
+ //Loads sound files
+  file1 = new SoundFile(this, "cinema.mp3");
+  file1.play();
+  file1.loop();
+  file2 = new SoundFile(this, "ding.mp3");
+  smooth();
 }
 
 void draw() {
@@ -160,8 +161,7 @@ boolean foodChecker(int x, int y) {
     if(y >= foodY - blockSize/2 && y <= foodY + blockSize/2) {
       mouseEvent();
       //Plays sound effect when the snake eats the food
-      player2 = minim.loadFile("ding.mp3");
-      player2.play();
+      file2.play();
       snakeLength++;
       snakeX[snakeLength] = x;
       snakeY[snakeLength] = y;
@@ -228,7 +228,7 @@ void gameOver() {
    }
    textSize(20);
    fill(255);
-   text("\n\nPlay again?",width/2,height/2);
+   text("Play again?",width/2,height/2 + 50);
    rect(width/4,height/3 + height/4,100,50);
    rect(3*width/4,height/3 + height/4,100,50);
    fill(255,0,0);
